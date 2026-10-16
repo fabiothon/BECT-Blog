@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Site Info -->
+        {% if title %}
+            <title>BECT Blog - {{ title }}</title>
+        {% else %}
+            <title>BECT Blog</title>
+        {% endif %}
+        <meta name="description" content="BECT Blog is a platform to share ideas, experiences and insights into the brand BECT Clothing.">
+        <meta name="author" content="Fabio Thon">
+        <!-- Open Graph Tags: The title of the page for social media sharing. It can match the title tag or be more descriptive. -->
+        <meta property="og:title" content="BECT Blog">
+        <!-- Open Graph Tags: Typically set to "website" for static sites or "article" for content-heavy pages. -->
+        <meta property="og:type" content="website">
+        <!-- Open Graph Tags: The URL of the page, used to ensure link previews resolve to the correct page. -->
+        <meta property="og:url" content="">
+        <!-- Open Graph Tags: URL of an image that represents the page. Useful for link previews. -->
+        <meta property="og:image" content="">
+        <!-- Open Graph Tags: Provides an alternative text for the image to improve accessibility. -->
+        <meta property="og:image:alt" content="">
+        <script>
+            (() => {
+                const theme = localStorage.getItem('theme') || 'auto';
+                const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', dark);
+            })();
+        </script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              type="text/css"
+              href="{{ url_for('static', path='css/output.css') }}">
+        <meta name="theme-color"
+              content="#fdfdfc"
+              media="(prefers-color-scheme: light)">
+        <meta name="theme-color"
+              content="#171614"
+              media="(prefers-color-scheme: dark)">
+        <!-- Favicon for all browsers -->
+        <link rel="icon"
+              href="{{ url_for('static', path='icons/favicon.ico') }}"
+              sizes="any">
+        <link rel="icon"
+              href="{{ url_for('static', path='icons/icon.svg') }}"
+              type="image/svg+xml">
+        <!-- Apple touch icon for iOS devices -->
+        <link rel="apple-touch-icon"
+              sizes="180x180"
+              href="{{ url_for('static', path='icons/icon.png') }}">
+        <!-- Web app manifest for Progressive Web Apps -->
+        <link rel="manifest"
+              href="{{ url_for('static', path='site.webmanifest') }}">
+    </head>
+    <body class="flex min-h-dvh flex-col bg-canvas font-sans text-fg antialiased">
+        <header class="sticky top-0 z-40 border-b border-line/60 bg-canvas/80 backdrop-blur-md">
+            <nav class="container-narrow flex flex-wrap items-center justify-between gap-x-6 py-3">
+                <a class="text-base font-semibold tracking-tight"
+                   href="{{ url_for('home') }}">BECT Blog</a>
+                <button id="navToggle"
+                        class="btn btn-ghost px-2.5 md:hidden"
+                        type="button"
+                        aria-controls="navMenu"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <svg class="size-5"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.75"
+                         stroke-linecap="round"
+                         aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
+                </button>
+                <div id="navMenu"
+                     data-open="false"
+                     class="hidden w-full flex-col gap-2 pt-3 pb-1 data-[open=true]:flex md:flex md:w-auto md:flex-row md:items-center md:gap-1 md:p-0">
+                    <a class="btn btn-ghost justify-start md:justify-center"
+                       aria-current="page"
+                       href="{{ url_for('home') }}">Home</a>
+                    <div id="loggedInNav"
+                         class="flex flex-col gap-2 md:flex-row md:items-center"
+                         hidden>
+                        <button class="btn btn-secondary"
+                                type="button"
+                                data-dialog-open="createPostModal">New Post</button>
+                        <a class="btn btn-primary"
+                           href="{{ url_for('account_page') }}"
+                           id="accountBtn">Account</a>
+                    </div>
+                    <div id="loggedOutNav"
+                         class="flex flex-col gap-2 md:flex-row md:items-center">
+                        <a class="btn btn-ghost justify-start md:justify-center"
+                           href="{{ url_for('login_page') }}">Login</a>
+                        <a class="btn btn-primary" href="{{ url_for('register_page') }}">Register</a>
+                    </div>
+                    <div class="relative">
+                        <button id="themeToggle"
+                                class="btn btn-ghost w-full justify-start md:w-auto md:justify-center"
+                                type="button"
+                                aria-haspopup="menu"
+                                aria-controls="themeMenu"
+                                aria-expanded="false">
+                            <span id="themeLabel">◐ Auto</span>
+                        </button>
+                        <div id="themeMenu"
+                             class="absolute left-0 z-50 mt-2 w-36 rounded-xl border border-line bg-canvas p-1 shadow-lg md:right-0 md:left-auto"
+                             role="menu"
+                             hidden>
+                            <button class="w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm hover:bg-surface aria-checked:font-semibold"
+                                    type="button"
+                                    role="menuitemradio"
+                                    aria-checked="false"
+                                    data-theme-value="light">☀︎ Light</button>
+                            <button class="w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm hover:bg-surface aria-checked:font-semibold"
+                                    type="button"
+                                    role="menuitemradio"
+                                    aria-checked="false"
+                                    data-theme-value="dark">☾ Dark</button>
+                            <button class="w-full cursor-pointer rounded-lg px-3 py-2 text-left text-sm hover:bg-surface aria-checked:font-semibold"
+                                    type="button"
+                                    role="menuitemradio"
+                                    aria-checked="false"
+                                    data-theme-value="auto">◐ Auto</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main role="main" class="container-narrow flex-1 py-10 sm:py-14">
+            {% block content %}
+            {% endblock content %}
+        </main>
+        <footer class="border-t border-line/60">
+            <div class="container-narrow py-6 text-center text-xs tracking-wide text-muted uppercase">
+                © 2020–<span id="year">2026</span> · BECT Clothing · All rights reserved · Made by Fabio Thon
+            </div>
+        </footer>
+        <dialog id="createPostModal"
+                class="dialog max-w-lg"
+                aria-labelledby="createPostModalLabel">
+            <form id="createPostForm" class="p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <h2 id="createPostModalLabel" class="text-lg font-semibold tracking-tight">New Post</h2>
+                    <button type="button"
+                            class="dialog-close"
+                            data-dialog-close
+                            aria-label="Close">✕</button>
+                </div>
+                <div class="mt-5 space-y-4">
+                    <div>
+                        <label for="title" class="label">Title</label>
+                        <input type="text" class="field" id="title" name="title" required>
+                    </div>
+                    <div>
+                        <label for="content" class="label">Content</label>
+                        <textarea class="field" id="content" name="content" rows="6" required></textarea>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-2">
+                    <button type="button" class="btn btn-secondary" data-dialog-close>Cancel</button>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="successModal"
+                class="dialog"
+                aria-labelledby="successModalLabel">
+            <div class="p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <h2 id="successModalLabel" class="text-lg font-semibold tracking-tight">Success</h2>
+                    <button type="button"
+                            class="dialog-close"
+                            data-dialog-close
+                            aria-label="Close">✕</button>
+                </div>
+                <p id="successMessage" class="mt-3 text-muted"></p>
+                <div class="mt-6 flex justify-end">
+                    <button type="button" class="btn btn-primary" data-dialog-close>Close</button>
+                </div>
+            </div>
+        </dialog>
+        <dialog id="errorModal"
+                class="dialog"
+                aria-labelledby="errorModalLabel">
+            <div class="p-6">
+                <div class="flex items-start justify-between gap-4">
+                    <h2 id="errorModalLabel"
+                        class="text-lg font-semibold tracking-tight text-danger">Error</h2>
+                    <button type="button"
+                            class="dialog-close"
+                            data-dialog-close
+                            aria-label="Close">✕</button>
+                </div>
+                <p id="errorMessage" class="mt-3 text-muted"></p>
+                <div class="mt-6 flex justify-end">
+                    <button type="button" class="btn btn-secondary" data-dialog-close>Close</button>
+                </div>
+            </div>
+        </dialog>
+        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+        <script type="module">
+            import { initDialogs, initNavToggle, initThemeMenu } from '/static/js/ui.js';
+
+            initDialogs();
+            initNavToggle();
+            initThemeMenu();
+        </script>
+        <!-- Auth State Management -->
+        <script type="module">
+            import { getCurrentUser } from '/static/js/auth.js';
+
+            async function updateAuthUI() {
+                const user = await getCurrentUser();
+                const loggedInNav = document.getElementById('loggedInNav');
+                const loggedOutNav = document.getElementById('loggedOutNav');
+                const accountBtn = document.getElementById('accountBtn');
+
+                loggedInNav.hidden = !user;
+                loggedOutNav.hidden = Boolean(user);
+                accountBtn.textContent = user ? user.username : 'Account';
+            }
+
+            updateAuthUI();
+        </script>
+        <!-- Create Post Form Handler -->
+        <script type="module">
+            import {
+            getErrorMessage,
+            hideModal,
+            showModal,
+            } from "/static/js/utils.js";
+            import { getToken } from '/static/js/auth.js';
+
+            const createForm = document.getElementById("createPostForm");
+
+            createForm.addEventListener("submit", async (event) => {
+            // Stop default form submission - we'll handle it with JavaScript
+            event.preventDefault();
+
+            const token = getToken();
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            // Gather form values into a plain object {title: "...", content: "..."}
+            const formData = new FormData(createForm);
+            const postData = Object.fromEntries(formData.entries());
+
+            try {
+                // POST to our API as JSON
+                const response = await fetch("/api/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(postData),
+                });
+
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                if (response.ok) {
+                const data = await response.json();
+                document.getElementById("successMessage").textContent =
+                    `Post "${data.title}" created successfully!`;
+
+                hideModal("createPostModal");
+                showModal("successModal");
+
+                // Clear form
+                createForm.reset();
+
+                // Reload page after modal is hidden to show new post
+                document
+                    .getElementById("successModal")
+                    .addEventListener(
+                    "close",
+                    () => {
+                        window.location.reload();
+                    },
+                    { once: true },
+                    );
+                } else {
+                const error = await response.json();
+                document.getElementById("errorMessage").textContent =
+                    getErrorMessage(error);
+
+                hideModal("createPostModal");
+                showModal("errorModal");
+                }
+            } catch (error) {
+                document.getElementById("errorMessage").textContent =
+                "Network error. Please check your connection and try again.";
+                showModal("errorModal");
+            }
+            });
+        </script>
+        {% block scripts %}
+        {% endblock scripts %}
+    </body>
+</html>

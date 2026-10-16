@@ -1,0 +1,127 @@
+@import "tailwindcss" source(none);
+@plugin "@tailwindcss/forms";
+
+@source "../../templates";
+@source "../js";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #fdfdfc;
+  --color-sand: #f0eeeb;
+  --color-stone: #cfc9c3;
+  --color-ash: #4b4743;
+  --color-ink: #171614;
+  --color-night: #22201e;
+  --color-danger: #b4413a;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-fg: var(--fg);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+}
+
+@layer base {
+  :root {
+    --canvas: var(--color-paper);
+    --surface: var(--color-sand);
+    --line: var(--color-stone);
+    --muted: var(--color-ash);
+    --fg: var(--color-ink);
+    --accent: var(--color-ink);
+    --on-accent: var(--color-paper);
+    color-scheme: light;
+  }
+
+  .dark {
+    --canvas: var(--color-ink);
+    --surface: var(--color-night);
+    --line: var(--color-ash);
+    --muted: var(--color-stone);
+    --fg: var(--color-paper);
+    --accent: var(--color-paper);
+    --on-accent: var(--color-ink);
+    color-scheme: dark;
+  }
+
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-stone);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .container-narrow {
+    @apply mx-auto w-full max-w-2xl px-4 sm:px-6;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-on-accent hover:bg-accent/85;
+  }
+
+  .btn-secondary {
+    @apply border border-line text-fg hover:bg-surface;
+  }
+
+  .btn-ghost {
+    @apply text-muted hover:bg-surface hover:text-fg;
+  }
+
+  .btn-danger {
+    @apply bg-danger text-paper hover:bg-danger/85;
+  }
+
+  .btn-danger-outline {
+    @apply border border-danger/40 text-danger hover:bg-danger/10;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-fg;
+  }
+
+  .field {
+    @apply block w-full rounded-lg border-line bg-canvas px-3 py-2 text-fg shadow-none placeholder:text-muted/60 focus:border-fg focus:ring-1 focus:ring-fg;
+  }
+
+  .hint {
+    @apply mt-1.5 text-sm text-muted;
+  }
+
+  .link {
+    @apply font-medium text-fg underline decoration-line underline-offset-4 transition-colors hover:decoration-fg;
+  }
+
+  .dialog {
+    @apply m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-line bg-canvas p-0 text-fg shadow-2xl backdrop:bg-ink/40 backdrop:backdrop-blur-sm;
+  }
+
+  .dialog[open] {
+    animation: dialog-in 150ms ease-out;
+  }
+
+  .dialog-close {
+    @apply -mr-2 -mt-1 inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-fg;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="mx-auto max-w-sm py-6">
+        <h1 class="text-3xl font-semibold tracking-tight">Login</h1>
+        <p class="mt-2 text-muted">Welcome back.</p>
+        <form id="loginForm" class="mt-8 space-y-4">
+            <div>
+                <label for="email" class="label">Email</label>
+                <input type="email" class="field" id="email" name="username" required>
+            </div>
+            <div>
+                <div class="flex items-baseline justify-between">
+                    <label for="password" class="label">Password</label>
+                    <a class="text-sm text-muted hover:text-fg"
+                       href="{{ url_for('forgot_password_page') }}">Forgot your password?</a>
+                </div>
+                <input type="password"
+                       class="field"
+                       id="password"
+                       name="password"
+                       required>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Login</button>
+        </form>
+        <p class="mt-6 text-sm text-muted">
+            Don't have an account? <a class="link" href="{{ url_for('register_page') }}">Register here</a>
+        </p>
+    </div>
+{% endblock content %}
+{% block scripts %}
+    <script type="module">
+      import { getErrorMessage, showModal } from '/static/js/utils.js';
+
+      const loginForm = document.getElementById('loginForm');
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(loginForm);
+
+        try {
+          // OAuth2PasswordRequestForm expects form data, not JSON
+          const response = await fetch('/api/users/token', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+
+            // Store token in localStorage
+            localStorage.setItem('access_token', data.access_token);
+
+            // Show success modal and redirect to home
+            document.getElementById('successMessage').textContent =
+              'Login successful!';
+            showModal('successModal');
+
+            document.getElementById('successModal').addEventListener('close', () => {
+              window.location.href = '/';
+            }, { once: true });
+          } else {
+            const error = await response.json();
+            document.getElementById('errorMessage').textContent = getErrorMessage(error);
+            showModal('errorModal');
+          }
+        } catch (error) {
+          document.getElementById('errorMessage').textContent =
+            'Network error. Please check your connection and try again.';
+          showModal('errorModal');
+        }
+      });
+    </script>
+{% endblock scripts %}
