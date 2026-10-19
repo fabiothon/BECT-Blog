@@ -6,7 +6,11 @@ BECT Blog is a platform for sharing ideas, experiences and insights. Registered 
 The application is built with FastAPI and serves server-rendered Jinja2 pages (Tailwind CSS) alongside a JSON REST API under `/api`. Data is stored in PostgreSQL through async SQLAlchemy. Users log in with JWT tokens, profile pictures are stored in AWS S3, and the app runs in Docker on Google Cloud Run.
 
 ## Application Overview
+### Application in light mode
+<img width="3544" height="2213" alt="light_mode" src="https://github.com/user-attachments/assets/43322e2f-3ae5-4c16-8c57-afc72c3c0891" />
 
+### Application in dark mode
+<img width="3544" height="2213" alt="dark_mode" src="https://github.com/user-attachments/assets/a59093f4-c1b0-4e20-91b4-8ffeffc696e1" />
 
 ## Repository Structure
 ```
