@@ -1,7 +1,7 @@
 # BECT Blog
 
 ## Description
-BECT Blog is a platform for sharing ideas, experiences and insights. Registered users can write, edit and delete their own posts, upload a profile picture, and reset a forgotten password by email. The app is available at fabiothon.ch, where all posts can be read online.
+BECT Blog is a platform for sharing ideas, experiences and insights. Registered users can write, edit and delete their own posts, upload a profile picture, and reset a forgotten password by email. The application is available at [fabiothon.ch](https://fabiothon.ch), where all posts can be read online.
 
 The application is built with FastAPI and serves server-rendered Jinja2 pages (Tailwind CSS) alongside a JSON REST API under `/api`. Data is stored in PostgreSQL through async SQLAlchemy. Users log in with JWT tokens, profile pictures are stored in AWS S3, and the app runs in Docker on Google Cloud Run.
 
