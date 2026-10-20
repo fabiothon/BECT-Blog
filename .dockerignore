@@ -242,7 +242,6 @@ pyrightconfig.json
 # Ignore all local history of files
 .history
 .ionide
-
 # End of https://www.toptal.com/developers/gitignore/api/python,macos,visualstudiocode,dotenv
 static/css/output.css
 env_bectblog/
