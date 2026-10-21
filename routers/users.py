@@ -170,7 +170,10 @@ async def forgot_password(
         )
 
     return {
-        "message": "If an account exists with this email, you will receive password reset instructions.",
+        "message": (
+            "If an account exists with this email, "
+            "you will receive password reset instructions."
+        ),
     }
 
 
@@ -223,7 +226,9 @@ async def reset_password(
 
     await db.commit()
     return {
-        "message": "Password reset successfully. You can now log in with your new password.",
+        "message": (
+            "Password reset successfully. You can now log in with your new password."
+        ),
     }
 
 
@@ -411,7 +416,10 @@ async def upload_profile_picture(
     if len(content) > settings.max_upload_size_bytes:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File too large. Maximum size is {settings.max_upload_size_bytes // (1024 * 1024)}MB",
+            detail=(
+                "File too large. Maximum size is "
+                f"{settings.max_upload_size_bytes // (1024 * 1024)}MB"
+            ),
         )
 
     try:
@@ -422,7 +430,10 @@ async def upload_profile_picture(
     except UnidentifiedImageError as err:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid image file. Please upload a valid image (JPEG, PNG, GIF, WebP).",
+            detail=(
+                "Invalid image file. "
+                "Please upload a valid image (JPEG, PNG, GIF, WebP)."
+            ),
         ) from err
 
     # Upload to S3 (also runs in threadpool via async wrapper)

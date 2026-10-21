@@ -47,3 +47,6 @@ docker build -t bectblog .
 docker run -p 8080:8080 --env-file .env bectblog
 ```
 
+## CI/CD Workflow
+GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) runs `ruff check`, `ruff format --check` and `pytest` against a PostgreSQL service container on every push. Changes reach `main` only through pull requests that pass this check. Every push to `main` that passes is built into a Docker image tagged with the commit SHA, pushed to Artifact Registry and deployed to Google Cloud Run. GitHub authenticates to Google Cloud through Workload Identity Federation (WIF), so no service account keys are stored.
+
